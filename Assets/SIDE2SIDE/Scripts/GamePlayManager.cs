@@ -14,6 +14,7 @@ public class GamePlayManager : MonoBehaviour
 
     public static int CURRENT_STAGE = 0;
     public static int currentGamePlayed = 0;
+    public Player playerScript;
 
     public int eachCountForSideTouch;
     [HideInInspector]
@@ -36,6 +37,8 @@ public class GamePlayManager : MonoBehaviour
     public TextMeshProUGUI bestScoreAndLevel;
 
     public GameObject GameOverPanel;
+    public GameObject PausePanel;
+    public TextMeshProUGUI pauseScoreText;
     public GameObject tabToStartText;
     public TitleAnimatorController titleAnimatorController;
     public TextMeshProUGUI waitTimeText;
@@ -43,6 +46,7 @@ public class GamePlayManager : MonoBehaviour
 
     [HideInInspector]
     public bool isStarted = false;
+    private bool isPaused = false;
 
     private int sideTouchCount = 0;
     private int sideTouchGoal = 12;
@@ -62,7 +66,7 @@ public class GamePlayManager : MonoBehaviour
 
         // Get stage number
         // If you want to start from STAGE 0, uncomment next line. 
-        // PlayerPrefs.SetInt("CURRENT_STAGE", 0);
+         PlayerPrefs.SetInt("CURRENT_STAGE", 0);
         CURRENT_STAGE = PlayerPrefs.GetInt("CURRENT_STAGE", 0);
 
         if (PlayerPrefs.GetString("soundOnOff", "false") == "true") soundOfOffToggle.isOn = false;
@@ -128,7 +132,7 @@ public class GamePlayManager : MonoBehaviour
 
         if (sideTouchCount >= sideTouchGoal)
         {
-            // if (CURRENT_STAGE % 5 == 0) ShowADs();
+             if (CURRENT_STAGE % 5 == 0) ShowADs();
             StartCoroutine(StageCompleteEffect());
             sideTouchCount = 0;
             percent = 0;
@@ -162,7 +166,7 @@ public class GamePlayManager : MonoBehaviour
 
     void ShowADs()
     {
-       // if (Advertisement.IsReady("rewardedVideo")) Advertisement.Show("rewardedVideo");
+       //if (Advertisement.IsReady("rewardedVideo")) Advertisement.Show("rewardedVideo");
     }
 
     void AddScore(int n)
@@ -253,6 +257,25 @@ public class GamePlayManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void PauseGame()
+    {
+        
+        
+        if (isPaused) return;
+        Time.timeScale = 0;
+        isPaused = true;
+        playerScript.enabled = false;
+        Time.timeScale = 0; // Freeze the game
+        PausePanel.SetActive(true); // Show the pause panel
+        pauseScoreText.text = $"Score: {CurrentScore}"; // Update the score text
+    }
+    public void ContinueGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1;
+        playerScript.enabled = true;// Resume the game
+        PausePanel.SetActive(false); // Hide the pause panel
     }
 
 
