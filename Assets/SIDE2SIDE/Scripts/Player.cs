@@ -134,13 +134,13 @@ public class Player : MonoBehaviour
 
 
 
-    void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag == "Wall" && isDead == false)
-        {
-            StartCoroutine(Dead(other));
-        }
-    }
+    // void OnCollisionEnter(Collision other)
+    // {
+    //     if (other.gameObject.tag == "Wall" && isDead == false)
+    //     {
+    //         StartCoroutine(Dead(other));
+    //     }
+    // }
 
 
 
