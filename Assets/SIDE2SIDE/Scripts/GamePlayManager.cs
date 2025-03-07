@@ -17,7 +17,7 @@ public class GamePlayManager : MonoBehaviour
     public static int currentGamePlayed = 0;
     public int checkpointAfterStage = 10; //checkpoint after every n stages
     public int nextCheckpointStage = 0; //next checkpoint to save
-    [SerializeField] private bool isDevMode; //set this true if you want to test at different stages
+    [SerializeField] private bool isDevMode; //After this many stages, the game will save progress.
     [SerializeField] private int devModeStartStage; //set start stage for testing purposes
     
     public Player playerScript;
@@ -71,21 +71,21 @@ public class GamePlayManager : MonoBehaviour
         restartOrContinueText.text = "RESTART";
 
         // Get stage number
-
         if (isDevMode)
         {
+            //if you are currently in dev mode, the game will start at the stage that you have set
             PlayerPrefs.SetInt("CURRENT_STAGE", devModeStartStage);
             CURRENT_STAGE = PlayerPrefs.GetInt("CURRENT_STAGE", 0);
         }
         else
         {
+            //if not in dev mode, the game will start at last saved checkpoint
             PlayerPrefs.SetInt("CURRENT_STAGE", PlayerPrefs.GetInt("LAST_CHECKPOINT"));
             CURRENT_STAGE = PlayerPrefs.GetInt("CURRENT_STAGE", 0);
         }
         
-        //Initialize Checkpoint
-        nextCheckpointStage = 0;
-        nextCheckpointStage = PlayerPrefs.GetInt("LAST_CHECKPOINT") + checkpointAfterStage;
+        nextCheckpointStage = 0; //set next checkpoint to "0" to avoid unnecessary bugs 
+        nextCheckpointStage = PlayerPrefs.GetInt("LAST_CHECKPOINT") + checkpointAfterStage; // Find the next checkpoint by adding to the last saved stage 
 
         if (PlayerPrefs.GetString("soundOnOff", "false") == "true") soundOfOffToggle.isOn = false;
         else soundOfOffToggle.isOn = true;
@@ -227,10 +227,11 @@ public class GamePlayManager : MonoBehaviour
         CURRENT_STAGE++;
         PlayerPrefs.SetInt("CURRENT_STAGE", CURRENT_STAGE);
 
+        //Check if this is stage is a checkpoint
         if (CURRENT_STAGE == nextCheckpointStage)
         {
-            PlayerPrefs.SetInt("LAST_CHECKPOINT", CURRENT_STAGE);
-            nextCheckpointStage += checkpointAfterStage;
+            PlayerPrefs.SetInt("LAST_CHECKPOINT", CURRENT_STAGE); //save current stage as checkpoint
+            nextCheckpointStage += checkpointAfterStage; //update the next checkpoint to be few stages later
             Debug.Log("Last Checkpoint: " + PlayerPrefs.GetInt("LAST_CHECKPOINT"));
         }
     }
