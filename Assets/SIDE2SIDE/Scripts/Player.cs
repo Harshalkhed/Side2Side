@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class Player : MonoBehaviour
 {
     GamePlayManager GamePlayManagerScript;
+    [SerializeField] private CharacterList characterList; 
 
     float angle = 1.57f;
     float angleForUpDown = 0;
@@ -42,6 +43,8 @@ public class Player : MonoBehaviour
     public MeshRenderer player1;
     public MeshRenderer player2;
 
+    public Transform characterSpawnPoint; //the position to spawn the character
+
     bool isAudioOn;
 
 
@@ -62,6 +65,9 @@ public class Player : MonoBehaviour
         //Initialize player speed and effect
         MoveSideToSideCurrentSpeed = MoveSideToSideMinSpeed;
         accelerationEffect.Stop();
+        
+        //Load Selected Character
+        LoadCurrentCharacter();
     }
 
 
@@ -210,6 +216,19 @@ public class Player : MonoBehaviour
     public void NewStageStarted()
     {
         beginToCount = false;
+    }
+
+    void LoadCurrentCharacter()
+    {
+        //check if character is already there, if not then spawn it
+        if (characterList.GetCharacter(PlayerPrefs.GetInt("CURRENT_CHARACTER")) != characterSpawnPoint.GetChild(0).gameObject)
+        {
+            //Disable incorrect character to avoid spawning multiple characters
+            characterSpawnPoint.GetChild(0).gameObject.SetActive(false);
+            
+            //Load Selected character
+            Instantiate(characterList.GetCharacter(PlayerPrefs.GetInt("CURRENT_CHARACTER")), characterSpawnPoint);
+        }
     }
 
 

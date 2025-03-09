@@ -345,7 +345,11 @@ public class GamePlayManager : MonoBehaviour
     }
 
 
-
+    //This is a temporary method for loading character select scene
+    public void LoadSceneTemp(int sceneIndex)
+    {
+        SceneManager.LoadSceneAsync(sceneIndex);
+    }
 
 
 
