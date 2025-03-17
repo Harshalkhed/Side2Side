@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //The Scriptable object made from this script will act as sort of a "database" for character list
@@ -7,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class CharacterList : ScriptableObject
 {
-    public GameObject[] characters;
+    public Character[] characters;
 
     public int GetCharacterLength()
     {
@@ -17,6 +18,6 @@ public class CharacterList : ScriptableObject
 
     public GameObject GetCharacter(int characterIndex)
     {
-        return characters[characterIndex];
+        return characters[characterIndex].characterModel;
     }
 }

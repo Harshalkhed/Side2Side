@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CharacterList_1
   m_EditorClassIdentifier: 
   characters:
-  - {fileID: 919132149155446097, guid: 9206979bd6c8a594c9390840aaee3e01, type: 3}
-  - {fileID: 919132149155446097, guid: d74c9332283e2c24a96b6e2ac5892691, type: 3}
+  - {fileID: 11400000, guid: 2d5218ca20a241a439e1fb8f81e5ef47, type: 2}
+  - {fileID: 11400000, guid: 27fe22243229a614a8d42546fd68b662, type: 2}

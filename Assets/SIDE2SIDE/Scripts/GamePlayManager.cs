@@ -19,7 +19,8 @@ public class GamePlayManager : MonoBehaviour
     public int nextCheckpointStage = 0; //next checkpoint to save
     [SerializeField] private bool isDevMode; //After this many stages, the game will save progress.
     [SerializeField] private int devModeStartStage; //set start stage for testing purposes
-    
+
+    public CharacterUnlocker characterUnlocker;
     public Player playerScript;
 
     public int eachCountForSideTouch;
@@ -234,6 +235,8 @@ public class GamePlayManager : MonoBehaviour
             nextCheckpointStage += checkpointAfterStage; //update the next checkpoint to be few stages later
             Debug.Log("Last Checkpoint: " + PlayerPrefs.GetInt("LAST_CHECKPOINT"));
         }
+        
+        characterUnlocker.OnLevelCompleted();
     }
 
 
@@ -345,10 +348,15 @@ public class GamePlayManager : MonoBehaviour
     }
 
 
-    //This is a temporary method for loading character select scene
+    //This is a temporary method currently used for loading character select scene
     public void LoadSceneTemp(int sceneIndex)
     {
         SceneManager.LoadSceneAsync(sceneIndex);
+    }
+
+    public int GetCurrentStage()
+    {
+        return CURRENT_STAGE;
     }
 
 

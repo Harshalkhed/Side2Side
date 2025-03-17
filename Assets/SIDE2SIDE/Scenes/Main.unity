@@ -15556,6 +15556,7 @@ GameObject:
   - component: {fileID: 1741514292}
   - component: {fileID: 1741514293}
   - component: {fileID: 1741514295}
+  - component: {fileID: 1741514296}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -15592,8 +15593,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   checkpointAfterStage: 2
   nextCheckpointStage: 0
-  isDevMode: 0
+  isDevMode: 1
   devModeStartStage: 0
+  characterUnlocker: {fileID: 1741514296}
   playerScript: {fileID: 34901391}
   eachCountForSideTouch: 1
   currentPercentage: 0
@@ -15849,6 +15851,20 @@ MonoBehaviour:
     PlayerSub: {r: 0, g: 1, b: 0.62097406, a: 0}
     backgroundMain: {r: 0, g: 0.74822855, b: 1, a: 0}
     backgroundSub: {r: 0, g: 1, b: 0.8360357, a: 0}
+--- !u!114 &1741514296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741514291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95d6a3a79e1720f4487b9ed45ef6537f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamePlayManager: {fileID: 1741514293}
+  characterList: {fileID: 11400000, guid: 16e874b7ffaead843b223c7a37d5320a, type: 2}
 --- !u!1 &1755705559
 GameObject:
   m_ObjectHideFlags: 0

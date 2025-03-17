@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CharacterSelector : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class CharacterSelector : MonoBehaviour
     [SerializeField] private GameObject[] charactersInScene;
     [SerializeField] private int showCharacter;
     [SerializeField] private int currentCharacter;
+    
+    [SerializeField] private RawImage unlockImage;
+    [SerializeField] private Button selectCharacterButton;
     
     // Start is called before the first frame update
     void Start()
@@ -31,6 +35,8 @@ public class CharacterSelector : MonoBehaviour
                 charactersInScene[i].SetActive(false);
             }
         }
+        
+        HandleLockUI();
     }
     
 
@@ -47,6 +53,8 @@ public class CharacterSelector : MonoBehaviour
         charactersInScene[showCharacter].SetActive(false); //disable current character
         showCharacter = (showCharacter + 1) % charactersInScene.Length; //increment character index
         charactersInScene[showCharacter].SetActive(true); //enable character
+        
+        HandleLockUI();
     }
     
     
@@ -56,6 +64,8 @@ public class CharacterSelector : MonoBehaviour
         charactersInScene[showCharacter].SetActive(false); //disable current character
         showCharacter = (showCharacter - 1 + charactersInScene.Length) % charactersInScene.Length; //decrement character index
         charactersInScene[showCharacter].SetActive(true); //enable character
+        
+        HandleLockUI();
     }
 
     
@@ -65,5 +75,21 @@ public class CharacterSelector : MonoBehaviour
         currentCharacter = showCharacter;
         PlayerPrefs.SetInt("CURRENT_CHARACTER", currentCharacter);
         SceneManager.LoadSceneAsync(1); //Load Game Scene after selecting character
+    }
+
+    void HandleLockUI()
+    {
+        if (characterList.characters[showCharacter].GetIsLock())
+        {
+            //Character is Locked
+            unlockImage.enabled = true;
+            selectCharacterButton.enabled = false;
+        }
+        else
+        {
+            //Character is Unlocked
+            unlockImage.enabled = false;
+            selectCharacterButton.enabled = true;
+        }
     }
 }
