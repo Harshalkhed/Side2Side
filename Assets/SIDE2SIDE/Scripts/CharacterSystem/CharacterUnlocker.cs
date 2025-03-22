@@ -6,8 +6,8 @@ public class CharacterUnlocker : MonoBehaviour
     [SerializeField] private GamePlayManager gamePlayManager;
     [SerializeField] private CharacterList characterList;
 
-    private Dictionary<int, int> levelToCharacterMap = new Dictionary<int, int>();
-    private int charToUnlock; // Index of next character to unlock
+    [SerializeField] private Dictionary<int, int> levelToCharacterMap = new Dictionary<int, int>();
+    [SerializeField] private int charToUnlock; // Index of next character to unlock
 
     void Start()
     {
@@ -32,7 +32,7 @@ public class CharacterUnlocker : MonoBehaviour
     {
         // Get stored value OR find the next locked character dynamically
         charToUnlock = PlayerPrefs.GetInt("NextCharacterToUnlock", FindNextUnlockableCharacter());
-        Debug.Log($"Loaded charToUnlock: {charToUnlock}");
+        Debug.Log($"Loaded charToUnlock: {charToUnlock} : {characterList.characters[charToUnlock - 1].characterName}");
     }
 
     int FindNextUnlockableCharacter()
@@ -54,12 +54,11 @@ public class CharacterUnlocker : MonoBehaviour
     {
         int currentStage = gamePlayManager.GetCurrentStage();
 
-        if (charToUnlock < characterList.characters.Length && 
-            characterList.characters[charToUnlock].GetUnlockLevel() <= currentStage)
+        if (charToUnlock - 1 < characterList.characters.Length && characterList.characters[charToUnlock - 1].GetUnlockLevel() <= currentStage && currentStage != 0)
         {
             // Unlock the character
-            characterList.characters[charToUnlock].UnlockCharacter();
-            Debug.Log($"Unlocked {characterList.characters[charToUnlock].characterName}");
+            characterList.characters[charToUnlock - 1].UnlockCharacter();
+            Debug.Log($"Unlocked {characterList.characters[charToUnlock - 1].characterName}");
 
             // Move to next character unlock
             charToUnlock = FindNextUnlockableCharacter();

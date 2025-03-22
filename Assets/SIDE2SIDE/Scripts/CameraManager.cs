@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,9 +13,19 @@ public class CameraManager : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private float posX = 0;
 
+    private CharacterSelector characterSelector;
+
+    private void Start()
+    {
+        characterSelector = FindObjectOfType<CharacterSelector>();
+    }
+
     void Update()
     {
-        FollowPlayer();
+        if (characterSelector.isGameOn)
+        {
+            FollowPlayer();
+        }
     }
 
 

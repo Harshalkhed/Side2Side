@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -7,6 +8,7 @@ using UnityEngine.EventSystems;
 public class Player : MonoBehaviour
 {
     GamePlayManager GamePlayManagerScript;
+    CharacterSelector characterSelector;
     [SerializeField] private CharacterList characterList; 
 
     float angle = 1.57f;
@@ -53,21 +55,31 @@ public class Player : MonoBehaviour
 
     public UnityEngine.UI.Toggle speakerToggle;
 
+    private void Awake()
+    {
+        
+    }
+
 
     void Start()
     {
         source = GetComponent<AudioSource>();
         GamePlayManagerScript = GameObject.Find("GameManager").GetComponent<GamePlayManager>();
+        characterSelector = FindObjectOfType<CharacterSelector>();
 
         ////Initialize time scale
         Time.timeScale = 1.0f;
 
-        //Initialize player speed and effect
-        MoveSideToSideCurrentSpeed = MoveSideToSideMinSpeed;
-        accelerationEffect.Stop();
+        //Wait for character selector
+        if (characterSelector.isGameOn)
+        {
+            //Initialize player speed and effect
+            MoveSideToSideCurrentSpeed = MoveSideToSideMinSpeed;
+            accelerationEffect.Stop();
         
-        //Load Selected Character
-        LoadCurrentCharacter();
+            //Load Selected Character
+            LoadCurrentCharacter();
+        }
     }
 
 

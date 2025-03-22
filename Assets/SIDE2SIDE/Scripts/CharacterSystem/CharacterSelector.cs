@@ -11,8 +11,22 @@ public class CharacterSelector : MonoBehaviour
     [SerializeField] private int showCharacter;
     [SerializeField] private int currentCharacter;
     
+    //Character Selector Camera Effects
+    [SerializeField] private Camera cam;
+    [SerializeField] private Transform gameCameraPos;
+    [SerializeField] private Transform charSelectorCameraPos;
+    [SerializeField] private float camTransitionSpeed;
+    public bool isGameOn;
+    
+    //UI Stuff
     [SerializeField] private RawImage unlockImage;
     [SerializeField] private Button selectCharacterButton;
+    [SerializeField] private RectTransform charSelectPanel;
+    [SerializeField] private RectTransform pausePanel;
+    [SerializeField] private RectTransform tapToStart;
+    [SerializeField] private RectTransform titleUI;
+
+    [SerializeField] private GameObject playerObj;
     
     // Start is called before the first frame update
     void Start()
@@ -20,7 +34,7 @@ public class CharacterSelector : MonoBehaviour
         //Initialize array
         charactersInScene = new GameObject[characterList.GetCharacterLength()];
         
-        //spawn all the characters in scene
+        //spawn all the characters in scene  //GOTTA OPTIMIZE THIS 'CUZ NOW CHAR-SELECTOR is in GAME ITSELF...
         for (int i = 0; i < characterList.GetCharacterLength(); i++)
         {
             charactersInScene[i] = Instantiate(characterList.GetCharacter(i), transform);
@@ -36,6 +50,7 @@ public class CharacterSelector : MonoBehaviour
             }
         }
         
+        SwitchToCharSelector(false);
         HandleLockUI();
     }
     
@@ -74,7 +89,50 @@ public class CharacterSelector : MonoBehaviour
     {
         currentCharacter = showCharacter;
         PlayerPrefs.SetInt("CURRENT_CHARACTER", currentCharacter);
-        SceneManager.LoadSceneAsync(1); //Load Game Scene after selecting character
+        // SceneManager.LoadSceneAsync(1); //Load Game Scene after selecting character
+        
+        SwitchToCharSelector(true);
+    }
+
+    public void SwitchToCharSelector(bool isGame)
+    {
+        isGameOn = isGame;
+        if (isGame)
+        {
+            
+            if (Vector3.Distance(cam.transform.position, gameCameraPos.position) > 0.25f)
+            {
+                cam.transform.position = Vector3.Lerp(cam.transform.position, gameCameraPos.position, camTransitionSpeed * Time.unscaledTime);
+                cam.transform.localRotation = gameCameraPos.localRotation;
+            }
+            else
+            {
+                tapToStart.gameObject.SetActive(true);
+                titleUI.gameObject.SetActive(true);
+                charSelectPanel.gameObject.SetActive(false);
+                playerObj.SetActive(true);
+                charactersInScene[showCharacter].SetActive(false);
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(cam.transform.position, charSelectorCameraPos.position) > 0.25f)
+            {
+                cam.transform.position = Vector3.Lerp(cam.transform.position, charSelectorCameraPos.position, camTransitionSpeed * Time.unscaledTime);
+                cam.transform.localRotation = charSelectorCameraPos.localRotation;
+            }
+            else
+            {
+                tapToStart.gameObject.SetActive(false);
+                titleUI.gameObject.SetActive(false);
+                charSelectPanel.gameObject.SetActive(true);
+                pausePanel.gameObject.SetActive(false);
+                playerObj.SetActive(false);
+
+                charactersInScene[showCharacter].SetActive(true);
+                Debug.Log("Player: " + playerObj.activeSelf);
+            }
+        }
     }
 
     void HandleLockUI()

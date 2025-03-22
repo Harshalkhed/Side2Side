@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColorManager : MonoBehaviour
 {
     private Player playerScript;
+    private CharacterSelector characterSelector;
 
     public Material backgroundMainMat;
     public Material backgroundSubMat;
@@ -36,17 +37,30 @@ public class ColorManager : MonoBehaviour
 
     void Start()
     {
-        playerScript = GameObject.Find("Player").GetComponent<Player>();
+        if (GameObject.Find("Player") != null)
+        {
+            playerScript = GameObject.Find("Player").GetComponent<Player>();
+        }
 
         // get random int to gererate color randomly
         colorIndex = Random.Range(0, colorSets.Length - 1);
         
-        CallChangeColor();
+        //Wait for character selector
+        characterSelector = FindObjectOfType<CharacterSelector>();
+        if (characterSelector.isGameOn)
+        {
+            CallChangeColor();
+        }
     }
 
 
     public void CallChangeColor()
     {
+        if (playerScript == null)
+        {
+            playerScript = GameObject.Find("Player").GetComponent<Player>();
+        }
+        
         StartCoroutine(ChangeColor(ground1Mat, ground1Mat.color, colorSets[colorIndex].Ground1, Time.time, 1));
         StartCoroutine(ChangeColor(ground2Mat, ground2Mat.color, colorSets[colorIndex].Ground2, Time.time, 1));
 

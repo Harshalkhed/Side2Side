@@ -35,6 +35,11 @@ public class ObstaclesManager : MonoBehaviour
         }
 		GameObject prefab = Obs[GamePlayManager.CURRENT_STAGE];
 
+        if (PlayerObj == null)
+        {
+            PlayerObj = GameObject.Find("Player");
+        }
+
         GameObject newObsObj = Instantiate(prefab, new Vector3(0, 0, PlayerObj.transform.position.z + 20), Quaternion.identity);
         newObsObj.transform.SetParent(transform);
 		timeToNextObs_Min = newObsObj.transform.GetChild(0).GetComponent<Obstacle>().timeToNextObs_Min;
